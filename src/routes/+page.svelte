@@ -1,18 +1,21 @@
 <script>
-
-
+    
+  import Box from './main/+page.svelte'
   import {goto} from '$app/navigation'
   import axios from 'axios'
   import {onMount, onDestroy,afterUpdate} from 'svelte'
 	import { dataset_dev } from 'svelte/internal';
+  import {fade,blur,fly,slide,scale,draw} from 'svelte/transition'
   afterUpdate(()=>{
     let bindTest = document.getElementById('bind').innerText
     console.log(bindTest)
   })
+
+  let base = import.meta.env.VITE_MAIN_URL;
   
   let userNum = 1
   let api = axios.create({
-    baseURL : `https://jsonplaceholder.typicode.com/users`,
+    baseURL : `${base}`,
     headers:{'Content-type':'application/json'}
   })
 
@@ -94,7 +97,7 @@
   let selected
 
 
-  let url = `https://jsonplaceholder.typicode.com/users`
+  let url = `${base}`
   let callback
   async function call(){
     
@@ -135,6 +138,9 @@
     console.log(userNum)
     
   }
+
+  let checkFlag = false
+
 
 </script>
 
@@ -234,11 +240,24 @@
     {axiosCallback.id}
     {/if}
   </div>
+  <Box>
+    <p>slot 예제</p>
+  </Box>
+
+  <input type="checkbox" bind:checked={checkFlag}>
+
+  {#if checkFlag}
+  <div transition:draw={{delay:100,duration:300}}>
+    transition예제
+  </div>
+  {/if}
 </div>
 
 
 
 
 <style>
-
+  .box {
+    background: dodgerblue;
+  }
 </style>
